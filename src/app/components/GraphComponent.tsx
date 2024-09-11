@@ -1,4 +1,6 @@
-import { useEffect } from 'react';
+"use client";
+
+import { useEffect, useState } from 'react';
 import cytoscape, { ElementsDefinition } from 'cytoscape';
 
 interface Node {
@@ -16,33 +18,129 @@ interface GraphData {
   edges: Edge[];
 }
 
-interface GraphComponentProps {
-  data: GraphData;
-}
+const GraphComponent = () => {
+  const [data, setData] = useState<GraphData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [cyInstance, setCyInstance] = useState<cytoscape.Core | null>(null);
 
-const GraphComponent: React.FC<GraphComponentProps> = ({ data }) => {
+  // Simulate fetching data
   useEffect(() => {
+    setTimeout(() => {
+      const fetchedData: GraphData = {
+        nodes: [
+          { id: '1', label: 'Node 1' },
+          { id: '2', label: 'Node 2' },
+        ],
+        edges: [
+          { source: '1', target: '2' },
+        ],
+      };
+      setData(fetchedData);
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  useEffect(() => {
+    if (!data || !document.getElementById('cy')) return;
+
+    if (cyInstance) {
+      cyInstance.destroy(); // Clean up previous instance before creating a new one
+    }
+
     const elements: ElementsDefinition = {
       nodes: data.nodes.map((node) => ({
-        data: { id: node.id, label: node.label }
+        data: { id: node.id, label: node.label },
       })),
       edges: data.edges.map((edge) => ({
-        data: { source: edge.source, target: edge.target }
-      }))
+        data: { source: edge.source, target: edge.target },
+      })),
     };
 
     const cy = cytoscape({
-      container: document.getElementById('cy'), // container to render in
+      container: document.getElementById('cy'), // Ensure container exists
       elements,
       style: [
-        { selector: 'node', style: { 'background-color': '#0074D9', 'label': 'data(label)' } },
-        { selector: 'edge', style: { 'width': 3, 'line-color': '#ccc', 'target-arrow-color': '#ccc' } }
+        {
+          selector: 'node',
+          style: {
+            'background-color': '#0074D9',
+            'label': 'data(label)',
+            'color': '#fff',
+            'text-valign': 'center',
+            'text-halign': 'center',
+            'font-size': 12,
+            'width': 40,
+            'height': 40,
+            'overlay-padding': 6,
+            'overlay-opacity': 0,
+            'transition-property': 'background-color, width, height',
+            'transition-duration': 500,
+          },
+        },
+        {
+          selector: 'edge',
+          style: {
+            'width': 4,
+            'line-color': '#ddd',
+            'target-arrow-color': '#ddd',
+            'curve-style': 'bezier',
+            'target-arrow-shape': 'triangle',
+            'arrow-scale': 1.5,
+          },
+        },
       ],
-      layout: { name: 'grid', rows: 1 }
+      layout: {
+        name: 'cose',
+        animate: true,
+        animationDuration: 750,
+        fit: true,
+        padding: 50,
+      },
     });
+
+    // Handle hover effects using events
+    cy.on('mouseover', 'node', (event) => {
+      const node = event.target;
+      node.style({
+        'background-color': '#FF4136',
+        'width': 50,
+        'height': 50,
+      });
+    });
+
+    cy.on('mouseout', 'node', (event) => {
+      const node = event.target;
+      node.style({
+        'background-color': '#0074D9',
+        'width': 40,
+        'height': 40,
+      });
+    });
+
+    setCyInstance(cy); // Keep track of the Cytoscape instance
+
+    return () => {
+      if (cyInstance) {
+        cyInstance.destroy(); // Clean up Cytoscape instance on unmount
+      }
+    };
   }, [data]);
 
-  return <div id="cy" style={{ width: '800px', height: '600px' }}></div>;
+  if (loading) {
+    return <div>Loading graph...</div>;
+  }
+
+  return (
+    <div
+      id="cy"
+      style={{
+        width: '100%',
+        height: '100vh',
+        border: '1px solid #ccc',
+        boxSizing: 'border-box',
+      }}
+    ></div>
+  );
 };
 
 export default GraphComponent;

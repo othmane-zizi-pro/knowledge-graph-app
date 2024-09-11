@@ -5,6 +5,8 @@
 import { useState } from 'react';
 import InputForm from './components/InputForm';
 import GraphComponent from './components/GraphComponent';
+import './globals.css';
+
 
 interface Node {
   id: string;
@@ -27,7 +29,7 @@ export default function Home() {
     <div>
       <h1>Knowledge Graph Generator</h1>
       <InputForm onSubmit={handleGenerateGraph} />
-      <GraphComponent data={graphData} />
+      <GraphComponent  />
     </div>
   );
 }
