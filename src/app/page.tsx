@@ -1,12 +1,9 @@
-// src/app/page.tsx
-
-"use client";  // This makes it a Client Component
+"use client";
 
 import { useState } from 'react';
 import InputForm from './components/InputForm';
 import GraphComponent from './components/GraphComponent';
 import './globals.css';
-
 
 interface Node {
   id: string;
@@ -26,10 +23,10 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: 'white', color: 'black', minHeight: '100vh', padding: '20px' }}>
       <h1>Knowledge Graph Generator</h1>
       <InputForm onSubmit={handleGenerateGraph} />
-      <GraphComponent  />
+      <GraphComponent data={graphData} />
     </div>
   );
 }

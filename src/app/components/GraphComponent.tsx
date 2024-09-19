@@ -18,30 +18,15 @@ interface GraphData {
   edges: Edge[];
 }
 
-const GraphComponent = () => {
-  const [data, setData] = useState<GraphData | null>(null);
-  const [loading, setLoading] = useState(true);
+interface GraphComponentProps {
+  data: GraphData;
+}
+
+const GraphComponent: React.FC<GraphComponentProps> = ({ data }) => {
   const [cyInstance, setCyInstance] = useState<cytoscape.Core | null>(null);
 
-  // Simulate fetching data
   useEffect(() => {
-    setTimeout(() => {
-      const fetchedData: GraphData = {
-        nodes: [
-          { id: '1', label: 'Node 1' },
-          { id: '2', label: 'Node 2' },
-        ],
-        edges: [
-          { source: '1', target: '2' },
-        ],
-      };
-      setData(fetchedData);
-      setLoading(false);
-    }, 1000);
-  }, []);
-
-  useEffect(() => {
-    if (!data || !document.getElementById('cy')) return;
+    if (!document.getElementById('cy')) return;
 
     if (cyInstance) {
       cyInstance.destroy(); // Clean up previous instance before creating a new one
@@ -125,10 +110,6 @@ const GraphComponent = () => {
       }
     };
   }, [data]);
-
-  if (loading) {
-    return <div>Loading graph...</div>;
-  }
 
   return (
     <div
