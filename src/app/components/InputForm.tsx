@@ -1,4 +1,4 @@
-import React, { useState, CSSProperties } from 'react';
+import React, { useState } from 'react';
 
 interface Node {
   id: string;
@@ -54,90 +54,40 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
     onSubmit({ nodes, edges });
   };
 
-  const styles: { [key: string]: CSSProperties } = {
-    table: {
-      width: '100%',
-      marginBottom: '20px',
-      borderCollapse: 'collapse',
-    },
-    th: {
-      backgroundColor: '#f0f0f0',
-      padding: '10px',
-      textAlign: 'left',
-      borderBottom: '1px solid #ddd',
-    },
-    td: {
-      padding: '10px',
-      borderBottom: '1px solid #ddd',
-    },
-    input: {
-      width: '100%',
-      padding: '5px',
-      border: '1px solid #ddd',
-      borderRadius: '4px',
-      backgroundColor: 'white',
-      color: 'black',
-    },
-    button: {
-      padding: '5px 10px',
-      backgroundColor: '#0074D9',
-      color: 'white',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      marginRight: '5px',
-    },
-    deleteButton: {
-      backgroundColor: '#FF4136',
-    },
-    addButton: {
-      display: 'block',
-      marginBottom: '20px',
-    },
-    submitButton: {
-      backgroundColor: '#2ECC40',
-      padding: '10px 20px',
-      fontSize: '16px',
-    },
-    section: {
-      marginBottom: '40px',
-    },
-  };
-
   return (
-    <div>
-      <div style={styles.section}>
-        <h2 style={{ marginBottom: '20px' }}>Nodes</h2>
-        <table style={styles.table}>
+    <div className="space-y-8">
+      <div>
+        <h2 className="text-2xl font-semibold mb-4">Nodes</h2>
+        <table className="w-full mb-4">
           <thead>
             <tr>
-              <th style={styles.th}>Node ID</th>
-              <th style={styles.th}>Node Label</th>
-              <th style={styles.th}>Action</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Node ID</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Node Label</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             {nodes.map((node, index) => (
-              <tr key={index}>
-                <td style={styles.td}>
+              <tr key={index} className="border-b dark:border-gray-700">
+                <td className="px-4 py-2">
                   <input
-                    style={styles.input}
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                     value={node.id}
                     onChange={(e) => handleNodeChange(index, 'id', e.target.value)}
                     placeholder="Node ID"
                   />
                 </td>
-                <td style={styles.td}>
+                <td className="px-4 py-2">
                   <input
-                    style={styles.input}
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                     value={node.label}
                     onChange={(e) => handleNodeChange(index, 'label', e.target.value)}
                     placeholder="Node Label"
                   />
                 </td>
-                <td style={styles.td}>
+                <td className="px-4 py-2">
                   <button 
-                    style={{...styles.button, ...styles.deleteButton}}
+                    className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
                     onClick={() => deleteNode(index)}
                   >
                     Delete
@@ -148,45 +98,45 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
           </tbody>
         </table>
         <button 
-          style={{...styles.button, ...styles.addButton}}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
           onClick={addNode}
         >
           Add Node
         </button>
       </div>
 
-      <div style={styles.section}>
-        <h2 style={{ marginBottom: '20px' }}>Edges</h2>
-        <table style={styles.table}>
+      <div>
+        <h2 className="text-2xl font-semibold mb-4">Edges</h2>
+        <table className="w-full mb-4">
           <thead>
             <tr>
-              <th style={styles.th}>Source ID</th>
-              <th style={styles.th}>Target ID</th>
-              <th style={styles.th}>Action</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Source ID</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Target ID</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Action</th>
             </tr>
           </thead>
           <tbody>
             {edges.map((edge, index) => (
-              <tr key={index}>
-                <td style={styles.td}>
+              <tr key={index} className="border-b dark:border-gray-700">
+                <td className="px-4 py-2">
                   <input
-                    style={styles.input}
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                     value={edge.source}
                     onChange={(e) => handleEdgeChange(index, 'source', e.target.value)}
                     placeholder="Source ID"
                   />
                 </td>
-                <td style={styles.td}>
+                <td className="px-4 py-2">
                   <input
-                    style={styles.input}
+                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:border-gray-600"
                     value={edge.target}
                     onChange={(e) => handleEdgeChange(index, 'target', e.target.value)}
                     placeholder="Target ID"
                   />
                 </td>
-                <td style={styles.td}>
+                <td className="px-4 py-2">
                   <button 
-                    style={{...styles.button, ...styles.deleteButton}}
+                    className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
                     onClick={() => deleteEdge(index)}
                   >
                     Delete
@@ -197,7 +147,7 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
           </tbody>
         </table>
         <button 
-          style={{...styles.button, ...styles.addButton}}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
           onClick={addEdge}
         >
           Add Edge
@@ -205,28 +155,28 @@ const InputForm: React.FC<InputFormProps> = ({ onSubmit }) => {
       </div>
 
       <button 
-        style={{...styles.button, ...styles.submitButton}}
+        className="px-6 py-3 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-lg font-semibold"
         onClick={handleSubmit}
       >
         Generate Graph
       </button>
 
-      <div style={styles.section}>
-        <h2 style={{ marginBottom: '20px' }}>Visualization</h2>
-        <table style={styles.table}>
+      <div>
+        <h2 className="text-2xl font-semibold mb-4">Visualization</h2>
+        <table className="w-full">
           <thead>
             <tr>
-              <th style={styles.th}>Node ID</th>
-              <th style={styles.th}>Node Label</th>
-              <th style={styles.th}>Connected To</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Node ID</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Node Label</th>
+              <th className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-left">Connected To</th>
             </tr>
           </thead>
           <tbody>
             {nodes.map((node) => (
-              <tr key={node.id}>
-                <td style={styles.td}>{node.id}</td>
-                <td style={styles.td}>{node.label}</td>
-                <td style={styles.td}>
+              <tr key={node.id} className="border-b dark:border-gray-700">
+                <td className="px-4 py-2">{node.id}</td>
+                <td className="px-4 py-2">{node.label}</td>
+                <td className="px-4 py-2">
                   {edges
                     .filter((edge) => edge.source === node.id || edge.target === node.id)
                     .map((edge) => (edge.source === node.id ? edge.target : edge.source))

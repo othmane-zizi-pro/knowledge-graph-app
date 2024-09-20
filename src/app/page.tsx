@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import InputForm from './components/InputForm';
 import GraphComponent from './components/GraphComponent';
-import NavBar from './components/NavBar'; // Import the NavBar component
-import './globals.css';
+import NavBar from './components/NavBar';
+import Footer from './components/Footer';
 
 interface Node {
   id: string;
@@ -24,15 +24,23 @@ export default function Home() {
   };
 
   return (
-    <div className="bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark min-h-screen">
-      <NavBar /> {/* Add the NavBar component */}
-      <div className="container mx-auto text-center p-8">
-        <h1 className="text-3xl font-bold mb-8">Knowledge Graph Generator</h1>
-        <InputForm onSubmit={handleGenerateGraph} />
-        <div className="mt-10">
-          <GraphComponent data={graphData} />
+    <div className="flex flex-col min-h-screen">
+      <NavBar />
+      <main className="flex-grow bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-indigo-900">
+        <div className="container mx-auto px-4 py-12">
+          <br></br><br></br>
+          <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white">
+            Your Knowledge Graph Generator
+          </h1>
+          <div className="max-w-2xl mx-auto mb-12">
+            <InputForm onSubmit={handleGenerateGraph} />
+          </div>
+          <div className="mt-12">
+            <GraphComponent data={graphData} />
+          </div>
         </div>
-      </div>
+      </main>
+      <Footer />
     </div>
   );
 }

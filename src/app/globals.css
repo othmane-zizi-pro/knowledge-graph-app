@@ -1,19 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Roboto+Mono:wght@400;500&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   --background-light: #ffffff;
-  --background-dark: #0a0a0a;
-  --foreground-light: #171717;
-  --foreground-dark: #ededed;
-  --primary-color: #0074D9;
-  --secondary-color: #005bb5;
-  --font-sans: 'Inter', Arial, sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
+  --background-dark: #111827;
+  --foreground-light: #1f2937;
+  --foreground-dark: #f3f4f6;
+  --primary-color: #3b82f6;
+  --secondary-color: #10b981;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,60 +19,23 @@
 }
 
 body {
-  color: var(--foreground-light);
-  background: var(--background-light);
-  font-family: var(--font-sans);
-  padding: 0;
-  margin: 0;
+  @apply bg-background-light dark:bg-background-dark text-foreground-light dark:text-foreground-dark;
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors duration-200;
+  }
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-opacity-90;
+  }
+  .input {
+    @apply border border-gray-300 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
-
-  .smooth-transition {
-    transition: all 0.3s ease-in-out;
-  }
-}
-
-button {
-  padding: 10px 15px;
-  background-color: var(--primary-color);
-  color: white;
-  border-radius: 6px;
-  font-family: var(--font-sans);
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: var(--secondary-color);
-}
-
-input {
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  margin-right: 10px;
-  font-family: var(--font-mono);
-}
-
-form {
-  margin-bottom: 20px;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.bg-accent {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.bg-dark {
-  background-color: var(--background-dark);
-  color: var(--foreground-dark);
 }

@@ -23,21 +23,14 @@ interface GraphComponentProps {
 }
 
 const GraphComponent: React.FC<GraphComponentProps> = ({ data }) => {
-  const cyContainerRef = useRef<HTMLDivElement | null>(null); // Use ref for the container
+  const cyContainerRef = useRef<HTMLDivElement | null>(null);
   const [cyInstance, setCyInstance] = useState<cytoscape.Core | null>(null);
 
   useEffect(() => {
-    if (!cyContainerRef.current) {
-      console.log('Cytoscape container not available (cyContainerRef.current is null)');
-      return;
-    }
+    if (!cyContainerRef.current) return;
 
-    console.log('Cytoscape container available, initializing Cytoscape...');
-    
-    // Clean up the previous instance if one exists
     if (cyInstance) {
       cyInstance.destroy();
-      console.log('Cytoscape instance destroyed.');
     }
 
     const elements: ElementsDefinition = {
@@ -51,15 +44,15 @@ const GraphComponent: React.FC<GraphComponentProps> = ({ data }) => {
 
     try {
       const cy = cytoscape({
-        container: cyContainerRef.current, // Ensure container exists
+        container: cyContainerRef.current,
         elements,
         style: [
           {
             selector: 'node',
             style: {
-              'background-color': '#0074D9',
+              'background-color': '#3b82f6', // Tailwind blue-500
               'label': 'data(label)',
-              'color': '#fff',
+              'color': '#ffffff',
               'text-valign': 'center',
               'text-halign': 'center',
               'font-size': 12,
@@ -68,35 +61,34 @@ const GraphComponent: React.FC<GraphComponentProps> = ({ data }) => {
               'overlay-padding': 6,
               'overlay-opacity': 0,
               'transition-property': 'background-color, width, height',
-              'transition-duration': 500,
+              'transition-duration': 300,
             },
           },
           {
             selector: 'edge',
             style: {
-              'width': 4,
-              'line-color': '#ddd',
-              'target-arrow-color': '#ddd',
+              'width': 2,
+              'line-color': '#94a3b8', // Tailwind slate-400
+              'target-arrow-color': '#94a3b8',
               'curve-style': 'bezier',
               'target-arrow-shape': 'triangle',
-              'arrow-scale': 1.5,
+              'arrow-scale': 1.2,
             },
           },
         ],
         layout: {
           name: 'cose',
           animate: true,
-          animationDuration: 750,
+          animationDuration: 500,
           fit: true,
-          padding: 50,
+          padding: 30,
         },
       });
 
-      // Add hover effects to nodes
       cy.on('mouseover', 'node', (event) => {
         const node = event.target;
         node.style({
-          'background-color': '#FF4136',
+          'background-color': '#ef4444', // Tailwind red-500
           'width': 50,
           'height': 50,
         });
@@ -105,23 +97,20 @@ const GraphComponent: React.FC<GraphComponentProps> = ({ data }) => {
       cy.on('mouseout', 'node', (event) => {
         const node = event.target;
         node.style({
-          'background-color': '#0074D9',
+          'background-color': '#3b82f6', // Tailwind blue-500
           'width': 40,
           'height': 40,
         });
       });
 
       setCyInstance(cy);
-      console.log('Cytoscape instance created.');
-
     } catch (error) {
       console.error('Error initializing Cytoscape:', error);
     }
 
     return () => {
       if (cyInstance) {
-        cyInstance.destroy(); // Clean up Cytoscape instance on unmount
-        console.log('Cytoscape instance cleaned up on unmount.');
+        cyInstance.destroy();
       }
     };
   }, [data]);
@@ -129,12 +118,7 @@ const GraphComponent: React.FC<GraphComponentProps> = ({ data }) => {
   return (
     <div
       ref={cyContainerRef}
-      style={{
-        width: '100%',
-        height: '100vh',
-        border: '1px solid #ccc',
-        boxSizing: 'border-box',
-      }}
+      className="w-full h-[calc(100vh-16rem)] border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg overflow-hidden"
     ></div>
   );
 };
