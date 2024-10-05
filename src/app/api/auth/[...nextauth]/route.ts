@@ -1,4 +1,4 @@
-import NextAuth, { AuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
@@ -7,7 +7,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Define the NextAuth configuration
-export const authOptions: AuthOptions = {
+const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
@@ -17,7 +17,7 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET!,
   session: {
-    strategy: "jwt",
+    strategy: 'jwt' as const,  // Fix: explicitly type the strategy
   },
   callbacks: {
     async jwt({ token, user }: { token: any; user?: any }) {
@@ -35,5 +35,5 @@ export const authOptions: AuthOptions = {
   },
 };
 
-// Export the POST function for Next.js App Router
+// Correctly export the POST method for Next.js App Router
 export const POST = NextAuth(authOptions);
