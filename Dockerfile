@@ -1,36 +1,20 @@
-# Use an official Node.js runtime as a parent image
+# Use the official Node.js image as the base image
 FROM node:18-alpine AS builder
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package.json package-lock.json* ./
-RUN npm ci
+# Copy the package.json and package-lock.json (or yarn.lock) files
+COPY package*.json ./
 
-# Copy the rest of the application code
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code to the container
 COPY . .
 
 # Build the Next.js application
 RUN npm run build
-
-# Use a minimal Node.js runtime for the production image
-FROM node:18-alpine
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the built application and node_modules
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./
-
-# Set environment variables
-ENV NODE_ENV=production
-ENV PORT=8080
-
-# Expose the port Cloud Run will use
-EXPOSE 8080
 
 # Start the application
 CMD ["npm", "start"]
