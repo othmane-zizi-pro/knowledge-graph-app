@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import InputForm from './components/InputForm';
 import GraphComponent from './components/GraphComponent';
+import Authentication from "./components/authentication"; // Adjust path as needed
 
 interface Node {
   id: string;
@@ -27,6 +28,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white">
           Your Knowledge Graph Generator
         </h1>
+        <Authentication /> {/* Display the authentication buttons */}
         <div className="max-w-2xl mx-auto mb-12">
           <InputForm onSubmit={handleGenerateGraph} />
         </div>

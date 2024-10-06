@@ -3,24 +3,12 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 
-// Ensure this API route is treated as dynamic
 export const dynamic = 'force-dynamic';
 
-// Logging environment variables to verify they are available during build
-console.log("GOOGLE_ID:", process.env.GOOGLE_ID || "Not set");
-console.log("GOOGLE_SECRET:", process.env.GOOGLE_SECRET || "Not set");
-console.log("NEXTAUTH_SECRET:", process.env.NEXTAUTH_SECRET || "Not set");
-console.log("DATABASE_URL:", process.env.DATABASE_URL || "Not set");
-
-let prisma: PrismaClient;
-try {
-  prisma = new PrismaClient();
-  console.log("Prisma Client initialized successfully");
-} catch (error) {
-  console.error("Prisma connection error:", error);
-}
+const prisma = new PrismaClient();
 
 const authOptions = {
+    
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID || 'fallback-google-client-id',
@@ -46,7 +34,14 @@ const authOptions = {
       return session;
     },
   },
+  debug: true,
 };
 
-// Export the POST method to handle authentication
-export const POST = NextAuth(authOptions);
+export const POST = async (req: any, res: any) => {
+  return NextAuth(req, res, authOptions);
+};
+
+// Handle GET method for sessions
+export const GET = async (req: any, res: any) => {
+  return NextAuth(req, res, authOptions);
+};
