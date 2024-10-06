@@ -1,25 +1,23 @@
 steps:
-  # Example step to install dependencies (adjust to your project's requirements)
+  # Step to install dependencies
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
 
-  # Example step to build the project
+  # Step to generate the Prisma client
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'prisma:generate']
+
+  # Step to build the project
   - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'build']
 
-  # Example step to deploy to Google App Engine (adjust this to your deployment service if different)
+  # Step to deploy to Google App Engine (or other services)
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['app', 'deploy']
 
 options:
   # Set the logging option (Choose the logging method)
   logging: CLOUD_LOGGING_ONLY
-  # Or use defaultLogsBucketBehavior
-  # defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
 
-# Specify logsBucket if you want logs stored in a Cloud Storage bucket
-# Uncomment and set the correct bucket if you want this option
-# logsBucket: "gs://your-logs-bucket-name"
-
-# Add any additional configurations if needed
-timeout: '1200s'  # Optional: Timeout for the build process (20 minutes in this case)
+# Timeout for the build process (20 minutes)
+timeout: '1200s'
