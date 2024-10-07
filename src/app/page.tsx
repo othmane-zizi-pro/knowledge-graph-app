@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import InputForm from './components/InputForm';
 import GraphComponent from './components/GraphComponent';
-import Authentication from "./components/Authentication"; // Adjust path as needed
+import Authentication from './components/Authentication'; // Adjust path as needed
 
 interface Node {
   id: string;
@@ -26,7 +26,7 @@ export default function Home() {
     <main className="flex-grow bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-indigo-900">
       <div className="container mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-800 dark:text-white">
-          Your Knowledge Graph Generator
+          Your Knowledge Graph Generatorrr
         </h1>
         <Authentication /> {/* Display the authentication buttons */}
         <div className="max-w-2xl mx-auto mb-12">
