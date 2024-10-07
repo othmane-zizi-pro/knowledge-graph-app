@@ -1,0 +1,19 @@
+name: github-trigger
+description: Build trigger for knowledge-graph-app with logs bucket
+github:
+  owner: othmanez314
+  name: knowledge-graph-app
+  push:
+    branch: '^main$'
+build:
+  service_account: 'projects/knowledge-graphy/serviceAccounts/605439249931-compute@developer.gserviceaccount.com'
+  logs_bucket: 'gs://knowledge-graphy-build-logs'
+  steps:
+    - name: 'gcr.io/cloud-builders/docker'
+      args:
+        - 'build'
+        - '-t'
+        - 'gcr.io/$PROJECT_ID/knowledge-graph-app:$COMMIT_SHA'
+        - '.'
+  images:
+    - 'gcr.io/$PROJECT_ID/knowledge-graph-app:$COMMIT_SHA'
