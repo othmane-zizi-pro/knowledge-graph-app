@@ -19,8 +19,11 @@ COPY prisma ./prisma
 # Generate Prisma Client
 RUN npx prisma generate --schema=./prisma/schema.prisma
 
-# Expose port (if needed, change to your app's port)
-EXPOSE 3000
+# Set environment variable for the port
+ENV PORT 8080
 
-# Start the application
+# Expose port 8080 (the port Cloud Run expects)
+EXPOSE 8080
+
+# Start the application, ensure it listens on port 8080
 CMD ["npm", "run", "start", "--", "-p", "8080"]
