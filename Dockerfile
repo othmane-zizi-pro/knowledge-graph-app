@@ -14,10 +14,14 @@ RUN npm install
 COPY . ./
 
 # Ensure the 'prisma' directory and 'schema.prisma' file are copied
-COPY prisma ./prisma
+# (This line is redundant since you're already copying all files with the previous COPY command)
+# COPY prisma ./prisma
 
 # Generate Prisma Client
 RUN npx prisma generate --schema=./prisma/schema.prisma
+
+# **Add this step to build the Next.js application**
+RUN npm run build
 
 # Set environment variable for the port
 ENV PORT 8080
