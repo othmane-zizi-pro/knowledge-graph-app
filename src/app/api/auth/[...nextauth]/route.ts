@@ -1,35 +1,30 @@
-import NextAuth from "next-auth";
+// app/api/auth/[...nextauth]/route.ts
+import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma"; // Adjust the import path as necessary
 
 export const dynamic = 'force-dynamic';
 
-const prisma = new PrismaClient();
-
-const authOptions = {
-    
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID || 'fallback-google-client-id',
-      clientSecret: process.env.GOOGLE_SECRET || 'fallback-google-client-secret',
+      clientId: process.env.GOOGLE_ID!,
+      clientSecret: process.env.GOOGLE_SECRET!,
     }),
   ],
   adapter: PrismaAdapter(prisma),
-  secret: process.env.NEXTAUTH_SECRET || 'fallback-nextauth-secret',
-  session: {
-    strategy: 'jwt' as const,
-  },
+  secret: process.env.NEXTAUTH_SECRET!,
+  // Remove or set the session strategy to 'database' to store sessions in the DB
+  // The default strategy is 'database' when using an adapter
+  // session: {
+  //   strategy: 'database',
+  // },
   callbacks: {
-    async jwt({ token, user }: { token: any; user?: any }) {
-      if (user) {
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }: { session: any; token: any }) {
-      if (token && session.user) {
-        session.user.id = token.id;
+    async session({ session, user }) {
+      // Attach the user ID to the session object
+      if (session.user) {
+        session.user.id = user.id;
       }
       return session;
     },
@@ -37,11 +32,6 @@ const authOptions = {
   debug: true,
 };
 
-export const POST = async (req: any, res: any) => {
-  return NextAuth(req, res, authOptions);
-};
-
-// Handle GET method for sessions
-export const GET = async (req: any, res: any) => {
-  return NextAuth(req, res, authOptions);
-};
+// Next.js 13 App Router-compatible route handler
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
