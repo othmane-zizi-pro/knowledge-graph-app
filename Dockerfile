@@ -1,23 +1,26 @@
-# Use the official Node.js image as the base image
-FROM node:18-alpine AS builder
+# Use the official Node.js 16 image.
+FROM node:16
 
-# Set the working directory inside the container
+# Set the working directory.
 WORKDIR /app
 
-# Copy the package.json and package-lock.json (or yarn.lock) files
+# Copy package.json and package-lock.json to the working directory.
 COPY package*.json ./
 
-# Install dependencies
+# Install dependencies.
 RUN npm install
 
-# Generate Prisma client
-RUN npx prisma generate
+# Copy the rest of the application code to the working directory.
+COPY . ./
 
-# Copy the rest of the application code to the container
-COPY . .
+# Ensure the 'prisma' directory and 'schema.prisma' file are copied
+COPY prisma ./prisma
 
-# Build the Next.js application
-RUN npm run build
+# Generate Prisma Client
+RUN npx prisma generate --schema=./prisma/schema.prisma
+
+# Expose port (if needed, change to your app's port)
+EXPOSE 3000
 
 # Start the application
 CMD ["npm", "start"]
