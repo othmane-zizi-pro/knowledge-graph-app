@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import InputForm from './components/InputForm';
 import GraphComponent from './components/GraphComponent';
-import Authentication from "./components/authentication"; // Adjust path as needed
+import Authentication from "./components/Authentication"; // Adjust path as needed
 
 interface Node {
   id: string;
