@@ -1,7 +1,13 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const Authentication = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  // Log environment variables for debugging purposes
+  console.log("Session data:", session);
+  console.log("Session status:", status);
+  console.log("Google ID (GOOGLE_ID):", process.env.GOOGLE_ID);
+  console.log("Google Secret (GOOGLE_SECRET):", process.env.GOOGLE_SECRET);
 
   if (session) {
     return (
